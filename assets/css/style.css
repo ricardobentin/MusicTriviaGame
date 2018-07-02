@@ -1,0 +1,21 @@
+body{
+    background-image: url(../images/background.jpg);
+    border-style: solid;
+    border-color: yellow;
+
+    margin: 0 auto;
+}
+#gameContent{
+    background-color: white;
+    height: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+}
+h1{
+    text-align: center;
+    color: blue;
+    font-weight: bolder;    
+    font-family: sans-serif;
+    padding: 20px;
+    margin-top: 0px;
+}
