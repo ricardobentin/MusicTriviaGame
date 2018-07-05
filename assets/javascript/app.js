@@ -103,10 +103,9 @@ function startGame() {
     }
     //setInterval function to call decrement every second
     intervalId = setInterval(decrement, 1000);
-    $("#start").hide();
     $("#submit").show();
     $("#gameContent").show();
-    $("#startScreen").remove();
+    $("#startScreen").hide();
     //function call to generate the questions and write them to the page
     questionDisplay();
 }
@@ -170,7 +169,7 @@ function endGame() {
     //hide the questions
     $(".questions").hide();
     //hide the masthead
-    $("#masthead").hide();
+    $("h1").hide();
     //show stats on the page
     $("#results").prepend(`<h2>Thanks for taking the Music Trivia Challenge!</h2> <br>Correct Answers: ${correctAnswers}<br> Wrong Answers: ${wrongAnswers} <br> Unanswered Questions: ${unAnswered}`);
 
