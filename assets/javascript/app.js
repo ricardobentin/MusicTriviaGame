@@ -1,12 +1,13 @@
 //hide the submit button and gameContent to start the game
 $("#submit").hide();
 $("#gameContent").hide();
-//declare global variables to keep track of time, correct answers, incorrect answers, and unanswered questions
+//declare global variables to keep track of time, correct answers, incorrect answers, unanswered questions, and which mode the user has selected
 var gameTime;
 var intervalId;
 var correctAnswers = 0;
 var wrongAnswers = 0;
 var unAnswered = 0;
+var hardClicked;
 //create question object
 var questions = [
     {
@@ -82,20 +83,25 @@ var questions = [
 
 ]
 //create logic that when the button is pressed, game starts - my game has 2 modes, so the timing will depend on which mode the user chose
-//if the user selects Challenge Mode, then gameTime = 31 seconds. Added 1 second here to give the user the full time.
+//if the user selects Challenge Mode, then gameTime = 31 seconds. if the user selectes Easy Mode, then gameTime = 61 seconds. Added 1 second here to give the user the full time.
 $("#hard").on("click", function () {
-    gameTime = 31;
-    intervalId = setInterval(decrement, 1000);
-    $("#start").hide();
-    $("#submit").show();
-    $("#gameContent").show();
-    $("#startScreen").remove();
-    //function call to generate the questions and write them to the page
-    questionDisplay();
+    hardClicked = true;
+    startGame();
 });
-//if the user selects Easy Mode, then gameTime = 61 seconds. Added 1 second here to give the user the full time.
 $("#easy").on("click", function () {
-    gameTime = 61;
+    hardClicked = false;
+    startGame();
+});
+
+function startGame() {
+    //conditional to set gameTime based on whether the user selects Challenge Mode or Easy Mode
+    if (hardClicked) {
+        gameTime = 31;
+    }
+    else {
+        gameTime = 61;
+    }
+    //setInterval function to call decrement every second
     intervalId = setInterval(decrement, 1000);
     $("#start").hide();
     $("#submit").show();
@@ -103,7 +109,7 @@ $("#easy").on("click", function () {
     $("#startScreen").remove();
     //function call to generate the questions and write them to the page
     questionDisplay();
-});
+}
 //function to display the questions on the page by looping through the questions array and then appending the answer options by looping through the answer options corresponding to each question
 function questionDisplay() {
     for (var j = 0; j < questions.length; j++) {
@@ -125,11 +131,11 @@ function grade() {
         //scenario where a user selects the correct answer is if the checked value of the question radio button is the same as the correct option in the questions object
         if ($(`input:radio[name="${questions[i].name}"]:checked`).val() === questions[i].correct) {
             correctAnswers++;
-        //scenario where a user leaves a question unanswered is if the checked value of the question radio button is undefined which means that it is not checked
+            //scenario where a user leaves a question unanswered is if the checked value of the question radio button is undefined which means that it is not checked
         }
         else if ($(`input:radio[name="${questions[i].name}"]:checked`).val() === undefined) {
             unAnswered++;
-        //scenario where a user gets a question wrong is if it is neither correct nor unanswered
+            //scenario where a user gets a question wrong is if it is neither correct nor unanswered
         }
         else {
             wrongAnswers++;
@@ -150,7 +156,7 @@ function decrement() {
     $("#time-left").html(`<h2>Time Remaining: ${gameTime} seconds</h2>`);
     //if the user runs out of time, or time = 0, then the game ends and the user's score is shown
     if (gameTime === 0) {
-         //call grade function to get the user's count of correct and wrong answers, and unanswered questions
+        //call grade function to get the user's count of correct and wrong answers, and unanswered questions
         grade();
         //call the endGame function to end the game
         endGame();
