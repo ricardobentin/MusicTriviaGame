@@ -1,4 +1,4 @@
-//hide the submit button to start the game
+//hide the submit button and gameContent to start the game
 $("#submit").hide();
 $("#gameContent").hide();
 //declare global variables to keep track of time, correct answers, incorrect answers, and unanswered questions
@@ -81,8 +81,8 @@ var questions = [
     },
 
 ]
-//create logic that when the button is pressed, game starts
-//if the user selects Challenge Mode, then gameTime = 30 seconds
+//create logic that when the button is pressed, game starts - my game has 2 modes, so the timing will depend on which mode the user chose
+//if the user selects Challenge Mode, then gameTime = 31 seconds. Added 1 second here to give the user the full time.
 $("#hard").on("click", function () {
     gameTime = 31;
     intervalId = setInterval(decrement, 1000);
@@ -93,7 +93,7 @@ $("#hard").on("click", function () {
     //function call to generate the questions and write them to the page
     questionDisplay();
 });
-//if the user selects Easy Mode, then gameTime = 60 seconds
+//if the user selects Easy Mode, then gameTime = 61 seconds. Added 1 second here to give the user the full time.
 $("#easy").on("click", function () {
     gameTime = 61;
     intervalId = setInterval(decrement, 1000);
@@ -122,11 +122,14 @@ function grade() {
 
     //for loop to compare the answer the user selected via radio buttons to the correct answer in the questions array
     for (var i = 0; i < questions.length; i++) {
+        //scenario where a user selects the correct answer is if the checked value of the question radio button is the same as the correct option in the questions object
         if ($(`input:radio[name="${questions[i].name}"]:checked`).val() === questions[i].correct) {
             correctAnswers++;
+        //scenario where a user leaves a question unanswered is if the checked value of the question radio button is undefined which means that it is not checked
         }
         else if ($(`input:radio[name="${questions[i].name}"]:checked`).val() === undefined) {
             unAnswered++;
+        //scenario where a user gets a question wrong is if it is neither correct nor unanswered
         }
         else {
             wrongAnswers++;
@@ -134,27 +137,33 @@ function grade() {
     }
 
 }
-//this click event handler dictates what happens when submit is clicked
+//this click event handler dictates what happens when the Submit button is clicked
 $("#submit").on("click", function () {
+    //call grade function to get the user's count of correct and wrong answers, and unanswered questions
     grade();
+    //call the endGame function to end the game
     endGame();
 })
 //function to tell the user how much time is left for the trivia challenge. The number gets updated to the page every second.
 function decrement() {
     gameTime--;
     $("#time-left").html(`<h2>Time Remaining: ${gameTime} seconds</h2>`);
+    //if the user runs out of time, or time = 0, then the game ends and the user's score is shown
     if (gameTime === 0) {
+         //call grade function to get the user's count of correct and wrong answers, and unanswered questions
         grade();
+        //call the endGame function to end the game
         endGame();
     }
 }
 function endGame() {
-    //need to stop the timer
+    //stop the timer
     clearInterval(intervalId);
     //hide the time div
     $("#time-left").hide();
     //hide the questions
     $(".questions").hide();
+    //hide the masthead
     $("#masthead").hide();
     //show stats on the page
     $("#results").prepend(`<h2>Thanks for taking the Music Trivia Challenge!</h2> <br>Correct Answers: ${correctAnswers}<br> Wrong Answers: ${wrongAnswers} <br> Unanswered Questions: ${unAnswered}`);
