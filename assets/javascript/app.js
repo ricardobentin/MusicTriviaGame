@@ -1,13 +1,12 @@
 //hide the submit button to start the game
 $("#submit").hide();
-
+$("#gameContent").hide();
 //declare global variables to keep track of time, correct answers, incorrect answers, and unanswered questions
-var gameTime = 10;
+var gameTime;
 var intervalId;
 var correctAnswers = 0;
 var wrongAnswers = 0;
 var unAnswered = 0;
-
 //create question object
 var questions = [
     {
@@ -82,17 +81,29 @@ var questions = [
     },
 
 ]
-
-
 //create logic that when the button is pressed, game starts
-$("#start").on("click", function () {
+//if the user selects Challenge Mode, then gameTime = 30 seconds
+$("#hard").on("click", function () {
+    gameTime = 30;
     intervalId = setInterval(decrement, 1000);
     $("#start").hide();
     $("#submit").show();
+    $("#gameContent").show();
+    $("#startScreen").remove();
     //function call to generate the questions and write them to the page
     questionDisplay();
 });
-
+//if the user selects Easy Mode, then gameTime = 60 seconds
+$("#easy").on("click", function () {
+    gameTime = 60;
+    intervalId = setInterval(decrement, 1000);
+    $("#start").hide();
+    $("#submit").show();
+    $("#gameContent").show();
+    $("#startScreen").remove();
+    //function call to generate the questions and write them to the page
+    questionDisplay();
+});
 //function to display the questions on the page by looping through the questions array and then appending the answer options by looping through the answer options corresponding to each question
 function questionDisplay() {
     for (var j = 0; j < questions.length; j++) {
@@ -126,29 +137,26 @@ function grade() {
 //this click event handler dictates what happens when submit is clicked
 $("#submit").on("click", function () {
     grade();
+    endGame();
+})
+//function to tell the user how much time is left for the trivia challenge. The number gets updated to the page every second.
+function decrement() {
+    gameTime--;
+    $("#time-left").html(`<h2>Time Remaining: ${gameTime} seconds</h2>`);
+    if (gameTime === 0) {
+        grade();
+        endGame();
+    }
+}
+function endGame() {
     //need to stop the timer
     clearInterval(intervalId);
     //hide the time div
     $("#time-left").hide();
     //hide the questions
     $(".questions").hide();
-    //show the results from the grade() function on the page
-    $("#results").append(` <h2>All Done!</h2> <br>Correct Answers: ${correctAnswers}<br> Wrong Answers: ${wrongAnswers} <br> Unanswered Questions: ${unAnswered}`);
-})
-//function to tell the user how much time is left for the trivia challenge. The number gets updated to the page every second.
-function decrement() {
-    gameTime--;
-    $("#time-left").html("<h2>Time Remaining: " + gameTime + "</h2>");
-    if (gameTime === 0) {
-        grade();
-        // alert("Your time is up! Click OK to see your results!");
-        //need to stop the timer
-        clearInterval(intervalId);
-        //hide the time div
-        $("#time-left").hide();
-        //hide the questions
-        $(".questions").hide();
-        //show stats on the page
-        $("#results").append(`<h2>Thanks for taking the Music Trivia Challenge!</h2> <br>Correct Answers: ${correctAnswers}<br> Wrong Answers: ${wrongAnswers} <br> Unanswered Questions: ${unAnswered}`);
-    }
+    $("#masthead").hide();
+    //show stats on the page
+    $("#results").prepend(`<h2>Thanks for taking the Music Trivia Challenge!</h2> <br>Correct Answers: ${correctAnswers}<br> Wrong Answers: ${wrongAnswers} <br> Unanswered Questions: ${unAnswered}`);
+
 }

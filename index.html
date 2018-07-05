@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Trivia Game</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Neucha" rel="stylesheet">
     <link rel="stylesheet" type="text/css" media="screen" href="./assets/css/style.css" />
     <link rel="icon" href="./assets/images/icon.png" />
     <!-- jquery CDN -->
@@ -13,21 +14,32 @@
 </head>
 
 <body>
-    <h1>
-        Totally Trivial Trivia!
-    </h1>
     <div id="startScreen">
-        <button id="start">
-            Click Me To Get Started!
-        </button>
+        <h1 id="masthead">
+            Welcome to the Music Trivia Challenge!!
+        </h1>
+        <div id="buttons">
+            <button id="hard" class="startButton">
+                Challenge Mode
+            </button>
+            <button id="easy" class="startButton">
+                Easy Mode
+            </button>
+        </div>
     </div>
     <div id="gameContent">
+        <h1 id="masthead">
+            Welcome to the Music Trivia Challenge!!
+        </h1>
         <div id="time-left">
         </div>
         <div class="questions">
-            <button id="submit">
-                Submit
-            </button>
+            <div>
+                <br>
+                <button id="submit">
+                    Submit
+                </button>
+            </div>
         </div>
         <div id="results">
         </div>
