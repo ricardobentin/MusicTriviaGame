@@ -82,8 +82,7 @@ var questions = [
     },
 
 ]
-//labels for each answer option
-var labels = ["first", "second", "third", "forth"];
+
 
 //create logic that when the button is pressed, game starts
 $("#start").on("click", function () {
@@ -98,10 +97,10 @@ $("#start").on("click", function () {
 function questionDisplay() {
     for (var j = 0; j < questions.length; j++) {
         $('.questions').prepend(`<div class= ${questions[j].name}></div>`);
-        $(questions[j].divClass).append(`<div class ="ques-title">${questions[j].ques} </div>`);
+        $(questions[j].divClass).append(`<h2>${questions[j].ques}</h2`);
         // loops through answers for each radio button and write them to the page as radio buttons
         for (var i = 0; i <= 3; i++) {
-            $(questions[j].divClass).append('<input type="radio"  name="' + questions[j].name + '" value="' + questions[j].ans[i] + '"/><label for="' + labels[i] + '">' + questions[j].ans[i] + '</label>');
+            $(questions[j].divClass).append(`<input type="radio"  name="${questions[j].name}" value="${questions[j].ans[i]}"/><label>${questions[j].ans[i]}</label>`);
         }
         $('.questions').prepend(`<hr />`);
 
@@ -110,12 +109,12 @@ function questionDisplay() {
 //create a function that grades the trivia challenge
 function grade() {
 
-    //for loop to compare the answers the user selected via radio buttons to the correct answers in the questions array
+    //for loop to compare the answer the user selected via radio buttons to the correct answer in the questions array
     for (var i = 0; i < questions.length; i++) {
-        if ($('input:radio[name="' + questions[i].name + '"]:checked').val() === questions[i].correct) {
+        if ($(`input:radio[name="${questions[i].name}"]:checked`).val() === questions[i].correct) {
             correctAnswers++;
         }
-        else if ($('input:radio[name="' + questions[i].name + '"]:checked').val() === undefined) {
+        else if ($(`input:radio[name="${questions[i].name}"]:checked`).val() === undefined) {
             unAnswered++;
         }
         else {
@@ -150,6 +149,6 @@ function decrement() {
         //hide the questions
         $(".questions").hide();
         //show stats on the page
-        $("#results").append(` <h2>All Done!</h2> <br>Correct Answers: ${correctAnswers}<br> Wrong Answers: ${wrongAnswers} <br> Unanswered Questions: ${unAnswered}`);
+        $("#results").append(`<h2>Thanks for taking the Music Trivia Challenge!</h2> <br>Correct Answers: ${correctAnswers}<br> Wrong Answers: ${wrongAnswers} <br> Unanswered Questions: ${unAnswered}`);
     }
 }
