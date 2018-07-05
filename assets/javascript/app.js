@@ -1,8 +1,12 @@
-//hide the submit button
+//hide the submit button to start the game
 $("#submit").hide();
-//need to create logic that when button is pressed, game starts
-var gameTime = 60;
+
+//declare global variables to keep track of time, correct answers, incorrect answers, and unanswered questions
+var gameTime = 10;
 var intervalId;
+var correctAnswers = 0;
+var wrongAnswers = 0;
+var unAnswered = 0;
 
 //create question object
 var questions = [
@@ -48,20 +52,45 @@ var questions = [
         correct: "The Steve Miller Band - The Joker",
         divClass: ".angel"
     },
-
-
+    {
+        ques: "In what city were the Rolling Stones formed?",
+        ans: ["Liverpool", "Manchester", "Bristol", "London"],
+        name: "rollingStones",
+        correct: "London",
+        divClass: ".rollingStones"
+    },
+    {
+        ques: "Who was the first artist to win a Grammy without a record contract?",
+        ans: ["Taylor Swift", "Chance the Rapper", "Amy Winehouse", "Beyonce"],
+        name: "grammy",
+        correct: "Chance the Rapper",
+        divClass: ".grammy"
+    },
+    {
+        ques: "What was the first music video played on MTV when it launched on August 1, 1981?",
+        ans: ["The Buggles - Video Killed The Radio Star", "Sheena Easton - 9 to 5", "Rick Springfield - Jessie's Girl", "Hall and Oates - Private Eyes"],
+        name: "mtv",
+        correct: "The Buggles - Video Killed The Radio Star",
+        divClass: ".mtv"
+    },
+    {
+        ques: "What is the name of the beat that is featured in all reggaeton songs?",
+        ans: ["Paradiddle", "Train Beat", "Money Beat", "Dem Bow"],
+        name: "beat",
+        correct: "Dem Bow",
+        divClass: ".beat"
+    },
 
 ]
 //labels for each answer option
 var labels = ["first", "second", "third", "forth"];
 
-
-//click to start the game
+//create logic that when the button is pressed, game starts
 $("#start").on("click", function () {
-    console.log("CLICKED");
     intervalId = setInterval(decrement, 1000);
     $("#start").hide();
     $("#submit").show();
+    //function call to generate the questions and write them to the page
     questionDisplay();
 });
 
@@ -70,7 +99,7 @@ function questionDisplay() {
     for (var j = 0; j < questions.length; j++) {
         $('.questions').prepend(`<div class= ${questions[j].name}></div>`);
         $(questions[j].divClass).append(`<div class ="ques-title">${questions[j].ques} </div>`);
-        // loops through answers for each radio button
+        // loops through answers for each radio button and write them to the page as radio buttons
         for (var i = 0; i <= 3; i++) {
             $(questions[j].divClass).append('<input type="radio"  name="' + questions[j].name + '" value="' + questions[j].ans[i] + '"/><label for="' + labels[i] + '">' + questions[j].ans[i] + '</label>');
         }
@@ -78,37 +107,49 @@ function questionDisplay() {
 
     }
 }
-
-$("#submit").on("click", function(){
-    var correctAnswers = 0;
-    var wrongAnswers = 0;
-    var unAnswered = 0;
+//create a function that grades the trivia challenge
+function grade() {
 
     //for loop to compare the answers the user selected via radio buttons to the correct answers in the questions array
-    for (var i = 0; i<questions.length; i++){
-        if ($('input:radio[name="' + questions[i].name + '"]:checked').val() === questions[i].correct){
+    for (var i = 0; i < questions.length; i++) {
+        if ($('input:radio[name="' + questions[i].name + '"]:checked').val() === questions[i].correct) {
             correctAnswers++;
-            console.log(`Correct Answer count: ${correctAnswers}`);
         }
-        else{
+        else if ($('input:radio[name="' + questions[i].name + '"]:checked').val() === undefined) {
+            unAnswered++;
+        }
+        else {
             wrongAnswers++;
-            console.log(`Wrong Answer count: ${wrongAnswers}`);
         }
     }
 
+}
+//this click event handler dictates what happens when submit is clicked
+$("#submit").on("click", function () {
+    grade();
     //need to stop the timer
     clearInterval(intervalId);
+    //hide the time div
+    $("#time-left").hide();
     //hide the questions
     $(".questions").hide();
-    //show stats on the page
-    $("#results").append(`Correct Answers: ${correctAnswers}<br> Wrong Answers: ${wrongAnswers} <br> Unanswered Questions: ${unAnswered}`);
+    //show the results from the grade() function on the page
+    $("#results").append(` <h2>All Done!</h2> <br>Correct Answers: ${correctAnswers}<br> Wrong Answers: ${wrongAnswers} <br> Unanswered Questions: ${unAnswered}`);
 })
-
+//function to tell the user how much time is left for the trivia challenge. The number gets updated to the page every second.
 function decrement() {
     gameTime--;
     $("#time-left").html("<h2>Time Remaining: " + gameTime + "</h2>");
     if (gameTime === 0) {
-        alert("Time Up!");
+        grade();
+        // alert("Your time is up! Click OK to see your results!");
+        //need to stop the timer
         clearInterval(intervalId);
+        //hide the time div
+        $("#time-left").hide();
+        //hide the questions
+        $(".questions").hide();
+        //show stats on the page
+        $("#results").append(` <h2>All Done!</h2> <br>Correct Answers: ${correctAnswers}<br> Wrong Answers: ${wrongAnswers} <br> Unanswered Questions: ${unAnswered}`);
     }
 }
