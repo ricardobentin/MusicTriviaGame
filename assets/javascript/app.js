@@ -84,7 +84,7 @@ var questions = [
 //create logic that when the button is pressed, game starts
 //if the user selects Challenge Mode, then gameTime = 30 seconds
 $("#hard").on("click", function () {
-    gameTime = 30;
+    gameTime = 31;
     intervalId = setInterval(decrement, 1000);
     $("#start").hide();
     $("#submit").show();
@@ -95,7 +95,7 @@ $("#hard").on("click", function () {
 });
 //if the user selects Easy Mode, then gameTime = 60 seconds
 $("#easy").on("click", function () {
-    gameTime = 60;
+    gameTime = 61;
     intervalId = setInterval(decrement, 1000);
     $("#start").hide();
     $("#submit").show();
