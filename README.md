@@ -1,6 +1,6 @@
 # TriviaGame
 
-#Welcome to the Music Trivia Challenge!
+Welcome to the Music Trivia Challenge!
 
 You can select from a Challenge Mode or an Easy Mode to start the game. Once you make your selection you will be presented with 10 questions that will test your knowledge on various topics related to popular music.
 
