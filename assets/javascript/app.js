@@ -1,4 +1,4 @@
-//hide the submit button and gameContent to start the game
+//hide the submit button and gameContent when the page loads
 $("#submit").hide();
 $("#gameContent").hide();
 //declare global variables to keep track of time, correct answers, incorrect answers, unanswered questions, and which mode the user has selected
@@ -103,21 +103,26 @@ function startGame() {
     }
     //setInterval function to call decrement every second
     intervalId = setInterval(decrement, 1000);
+    //show the submit button
     $("#submit").show();
+    //show the game content
     $("#gameContent").show();
+    //hide the introductory screen
     $("#startScreen").hide();
     //function call to generate the questions and write them to the page
     questionDisplay();
 }
-//function to display the questions on the page by looping through the questions array and then appending the answer options by looping through the answer options corresponding to each question
+//function to display the questions on the page 
 function questionDisplay() {
-    for (var j = 0; j < questions.length; j++) {
-        $('.questions').prepend(`<div class= ${questions[j].name}></div>`);
-        $(questions[j].divClass).append(`<h2>${questions[j].ques}</h2`);
+    // Show questions on page by looping through the questions array and attaching html elements to help with displaying the information
+    for (var i = 0; i < questions.length; i++) {
+        $('.questions').prepend(`<div class= ${questions[i].name}></div>`);
+        $(questions[i].divClass).append(`<h2>${questions[i].ques}</h2`);
         // loops through answers for each radio button and write them to the page as radio buttons
-        for (var i = 0; i <= 3; i++) {
-            $(questions[j].divClass).append(`<input type="radio"  name="${questions[j].name}" value="${questions[j].ans[i]}"/><label>${questions[j].ans[i]}</label>`);
+        for (var j = 0; j <= 3; j++) {
+            $(questions[i].divClass).append(`<input type="radio"  name="${questions[i].name}" value="${questions[i].ans[j]}"/><label>${questions[i].ans[j]}</label>`);
         }
+        //output looks nicer with the line added
         $('.questions').prepend(`<hr />`);
 
     }
