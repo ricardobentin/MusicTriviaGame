@@ -94,7 +94,7 @@ $("#easy").on("click", function () {
 });
 
 function startGame() {
-    //conditional to set gameTime based on whether the user selects Challenge Mode or Easy Mode
+    //conditional to set gameTime based on whether the user selects the Challenge Mode or Easy Mode. Only one mode can be selected to start the game.
     if (hardClicked) {
         gameTime = 31;
     }
