@@ -87,10 +87,12 @@ var questions = [
 $("#hard").on("click", function () {
     hardClicked = true;
     startGame();
+    event.preventDefault();
 });
 $("#easy").on("click", function () {
     hardClicked = false;
     startGame();
+    event.preventDefault();
 });
 
 function startGame() {
@@ -153,6 +155,7 @@ $("#submit").on("click", function () {
     grade();
     //call the endGame function to end the game
     endGame();
+    event.preventDefault();
 })
 //function to tell the user how much time is left for the trivia challenge. The number gets updated to the page every second.
 function decrement() {
